@@ -1,0 +1,65 @@
+<mockup version="1.0" skin="sketch" measuredW="942" measuredH="469" mockupW="863" mockupH="445">
+  <controls>
+    <control controlID="26" controlTypeID="com.balsamiq.mockups::FieldSet" x="78" y="83" w="578" h="139" measuredW="200" measuredH="170" zOrder="1" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Rules</text>
+      </controlProperties>
+    </control>
+    <control controlID="27" controlTypeID="com.balsamiq.mockups::TitleWindow" x="69" y="14" w="596" h="445" measuredW="450" measuredH="400" zOrder="0" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Batch%20Replacer</text>
+      </controlProperties>
+    </control>
+    <control controlID="28" controlTypeID="com.balsamiq.mockups::DataGrid" x="86" y="104" w="564" h="103" measuredW="341" measuredH="236" zOrder="2" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Name%5Cr%28job%20title%29%20%5E%2C%20Age%2C%20Nickname%2C%20Employee%0AGiacomo%20Guilizzoni%5CrFounder%20%26%20CEO%2C%2034%2C%20Peldi%2C%20%5Bx%5D%0AGuido%20Jack%20Guilizzoni%2C%204%2C%20The%20Guids%2C%20%5B%5D%0AMarco%20Botton%5CrTuttofare%2C%2031%2C%20%2C%20%5Bx%5D%0AMariah%20Maclachlan%5CrBetter%20Half%2C%2035%2C%20Patata%2C%20%5Bx%5D%0AValerie%20Liberty%5CrCOO%5C%2C%20WOW%21%20Division%2C%20%3A%29%2C%20Val%2C%20%5Bx%5D%0A%7B75L%2C%200R%2C%2025%2C%200C%7D</text>
+      </controlProperties>
+    </control>
+    <control controlID="32" controlTypeID="com.balsamiq.mockups::MenuBar" x="77" y="41" w="579" h="29" measuredW="116" measuredH="29" zOrder="3" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>File%2C%20Help</text>
+      </controlProperties>
+    </control>
+    <control controlID="33" controlTypeID="com.balsamiq.mockups::Label" x="763" y="62" w="169" h="91" measuredW="230" measuredH="25" zOrder="4" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>File%3EImport%20Rules%20File%3EExport%20Rules</text>
+      </controlProperties>
+    </control>
+    <control controlID="34" controlTypeID="com.balsamiq.mockups::FieldSet" x="78" y="224" w="578" h="170" measuredW="200" measuredH="170" zOrder="5" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Input%20files</text>
+      </controlProperties>
+    </control>
+    <control controlID="35" controlTypeID="com.balsamiq.mockups::List" x="89" y="245" w="418" h="110" measuredW="100" measuredH="126" zOrder="6" locked="false" isInGroup="-1">
+      <controlProperties>
+        <alternateRowColor>15594478</alternateRowColor>
+        <text>File%201%0AFile%202%0AFile%203%0AFile%204%0AFile%205</text>
+      </controlProperties>
+    </control>
+    <control controlID="36" controlTypeID="com.balsamiq.mockups::Button" x="522" y="245" w="-1" h="-1" measuredW="98" measuredH="28" zOrder="7" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Select%20Files</text>
+      </controlProperties>
+    </control>
+    <control controlID="37" controlTypeID="com.balsamiq.mockups::Button" x="522" y="280" w="-1" h="-1" measuredW="128" measuredH="28" zOrder="8" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Select%20Directory</text>
+      </controlProperties>
+    </control>
+    <control controlID="38" controlTypeID="com.balsamiq.mockups::TextInput" x="89" y="358" w="418" h="-1" measuredW="89" measuredH="29" zOrder="9" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>c%3A%5Ctmp%5Cout%5C</text>
+      </controlProperties>
+    </control>
+    <control controlID="39" controlTypeID="com.balsamiq.mockups::Button" x="582" y="358" w="-1" h="-1" measuredW="42" measuredH="28" zOrder="10" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>...</text>
+      </controlProperties>
+    </control>
+    <control controlID="40" controlTypeID="com.balsamiq.mockups::Button" x="80" y="402" w="-1" h="-1" measuredW="75" measuredH="28" zOrder="11" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Replace%21</text>
+      </controlProperties>
+    </control>
+  </controls>
+</mockup>
