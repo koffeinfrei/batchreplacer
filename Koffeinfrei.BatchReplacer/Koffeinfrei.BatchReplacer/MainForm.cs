@@ -32,7 +32,12 @@ namespace Koffeinfrei.BatchReplacer
             InitializeComponent();
             SetModeDropdown();
 
-            replacer = new Replacer { OutputDirectoryName = textBoxOutputDir.Text };
+            replacer = new Replacer
+                           {
+                               OutputDirectoryName = textBoxOutputDir.Text, 
+                               Rules = new Rules()
+                           };
+            dataGridRules.DataSource = replacer.Rules;
         }
 
         private void SetRules(string fileName)
@@ -40,12 +45,12 @@ namespace Koffeinfrei.BatchReplacer
             try
             {
                 replacer.Rules = Rules.Load(fileName);
+                dataGridRules.DataSource = replacer.Rules;
             }
             catch (InvalidOperationException e)
             {
                 SetStatusMessage(e.Message);
             }
-            dataGridRules.DataSource = replacer.Rules;
 
             TryEnableReplaceButton();
         }
@@ -117,10 +122,18 @@ namespace Koffeinfrei.BatchReplacer
 
         private void exportRulesMenuItem_Click(object sender, EventArgs e)
         {
-            DialogResult dialogResult = exportRulesSaveFileDialog.ShowDialog();
-            if (dialogResult == DialogResult.OK)
+            if (replacer.Rules.IsEmpty())
             {
-                replacer.Rules.Save(exportRulesSaveFileDialog.FileName);
+                SetStatusMessage("No rules are set, no need to export");
+            }
+            else
+            {
+                DialogResult dialogResult = exportRulesSaveFileDialog.ShowDialog();
+                if (dialogResult == DialogResult.OK)
+                {
+                    replacer.Rules.Save(exportRulesSaveFileDialog.FileName);
+                    SetStatusMessage("Rules have been exported.");
+                }
             }
         }
 
@@ -151,6 +164,11 @@ namespace Koffeinfrei.BatchReplacer
         private void buttonReplace_Click(object sender, EventArgs e)
         {
             backgroundWorker.RunWorkerAsync();
+        }
+
+        private void dataGridRules_CellLeave(object sender, DataGridViewCellEventArgs e)
+        {
+            TryEnableReplaceButton();
         }
 
         private void backgroundWorker_DoWork(object sender, DoWorkEventArgs e)

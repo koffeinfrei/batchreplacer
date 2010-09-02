@@ -35,5 +35,16 @@ namespace Koffeinfrei.BatchReplacer
         public string Replace { get; set; }
         [XmlAttribute("mode")]
         public ModeType Mode { get; set; }
+
+        /// <summary>
+        /// Gets a value indicating whether this instance is empty.
+        /// If <see cref="Search"/> and <see cref="Replace"/>
+        /// are null or empty, this rule is considered empty.
+        /// </summary>
+        /// <returns>&lt;c&gt;true&lt;/c&gt; if this instance is empty; otherwise, &lt;c&gt;false&lt;/c&gt;.</returns>
+        public bool IsEmpty()
+        {
+            return string.IsNullOrEmpty(Search) && string.IsNullOrEmpty(Replace);
+        }
     }
 }

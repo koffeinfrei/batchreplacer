@@ -14,17 +14,38 @@
 //  You should have received a copy of the GNU General Public License
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Text;
 using System.Xml.Serialization;
+using System.Linq;
 
 namespace Koffeinfrei.BatchReplacer
 {
     [XmlType("rules")]
     [XmlRoot("rules")]
-    public class Rules : List<Rule>
+    public class Rules : BindingList<Rule>
     {
+        public Rules()
+        {
+        }
+
+        private Rules(IList<Rule> rules):base(rules)
+        {
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether this instance is empty.
+        /// If all rules are empty, this rule set is considered empty.
+        /// </summary>
+        /// <returns>&lt;c&gt;true&lt;/c&gt; if this instance is empty; otherwise, &lt;c&gt;false&lt;/c&gt;.</returns>
+        public bool IsEmpty()
+        {
+            return this.All(r => r.IsEmpty());
+        }
+
         /// <summary>
         /// Loads (i.e. deserializes) the specified file and returns a <see cref="Rules"/> instance.
         /// </summary>
@@ -51,7 +72,8 @@ namespace Koffeinfrei.BatchReplacer
             XmlSerializer serializer = new XmlSerializer(typeof(Rules));
             using (TextWriter textWriter = new StreamWriter(file, false, Encoding.UTF8))
             {
-                serializer.Serialize(textWriter, this);
+                // export only non-empty rules
+                serializer.Serialize(textWriter, new Rules(this.Where(r => !r.IsEmpty()).ToList()));
                 textWriter.Close();
             }
         }

@@ -35,7 +35,7 @@ namespace Koffeinfrei.BatchReplacer
             get
             {
                 return InputFiles != null && InputFiles.Count > 0 &&
-                       Rules != null && Rules.Count > 0 &&
+                       Rules != null && !Rules.IsEmpty() &&
                        !string.IsNullOrEmpty(OutputDirectoryName);
             }
         }

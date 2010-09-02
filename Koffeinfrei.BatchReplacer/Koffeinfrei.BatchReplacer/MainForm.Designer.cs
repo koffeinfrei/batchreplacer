@@ -122,6 +122,7 @@
             this.dataGridRules.RowsDefaultCellStyle = dataGridViewCellStyle3;
             this.dataGridRules.Size = new System.Drawing.Size(658, 176);
             this.dataGridRules.TabIndex = 2;
+            this.dataGridRules.CellLeave += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridRules_CellLeave);
             // 
             // searchDataGridViewTextBoxColumn
             // 
@@ -336,7 +337,7 @@
             // toolStripStatusLabel
             // 
             this.toolStripStatusLabel.Name = "toolStripStatusLabel";
-            this.toolStripStatusLabel.Size = new System.Drawing.Size(624, 15);
+            this.toolStripStatusLabel.Size = new System.Drawing.Size(655, 15);
             this.toolStripStatusLabel.Spring = true;
             this.toolStripStatusLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
@@ -425,7 +426,7 @@
             // 
             // importRulesFileDialog
             // 
-            this.importRulesFileDialog.FileName = "openFileDialog1";
+            this.importRulesFileDialog.FileName = "openFileDialog";
             // 
             // MainForm
             // 
