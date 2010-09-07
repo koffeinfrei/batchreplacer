@@ -33,7 +33,7 @@ namespace Koffeinfrei.BatchReplacer.Tests
         {
             // input file
             string inputFile = Path.Combine(TestContext.DeploymentDirectory, "input.txt");
-            File.WriteAllText(inputFile, "asdf\n1234");
+            File.WriteAllText(inputFile, "asdf\n12s34\nASDF\n12S34");
 
             // output dir
             string outputDirName = "out_" + DateTime.Now.Ticks;
@@ -69,7 +69,31 @@ namespace Koffeinfrei.BatchReplacer.Tests
             }
 
             // Assert
-            Assert.AreEqual("qwer\n1234", File.ReadAllText(outputFile));
+            Assert.AreEqual("qwer\n12s34\nASDF\n12S34", File.ReadAllText(outputFile));
+        }
+
+        [TestMethod]
+        public void StartAndReportProgress_RuleInNormalIgnoreCaseMode_ReplacesOccurence()
+        {
+            // Arrange
+            replacer.Rules = new Rules
+                                 {
+                                     new Rule
+                                         {
+                                             Mode = Rule.ModeType.NormalIgnoreCase,
+                                             Search = "asdf",
+                                             Replace = "qwer"
+                                         }
+                                 };
+
+
+            // Act
+            foreach (int percent in replacer.StartAndReportProgress())
+            {
+            }
+
+            // Assert
+            Assert.AreEqual("qwer\n12s34\nqwer\n12S34", File.ReadAllText(outputFile));
         }
 
         [TestMethod]
@@ -81,8 +105,8 @@ namespace Koffeinfrei.BatchReplacer.Tests
                                      new Rule
                                          {
                                              Mode = Rule.ModeType.Regex,
-                                             Search = @"\d{3}",
-                                             Replace = "xyz"
+                                             Search = @"\d{2}[a-z]\d",
+                                             Replace = "wxyz"
                                          }
                                  };
 
@@ -93,7 +117,31 @@ namespace Koffeinfrei.BatchReplacer.Tests
             }
 
             // Assert
-            Assert.AreEqual("asdf\nxyz4", File.ReadAllText(outputFile));
+            Assert.AreEqual("asdf\nwxyz4\nASDF\n12S34", File.ReadAllText(outputFile));
+        }
+
+        [TestMethod]
+        public void StartAndReportProgress_RuleInRegexIgnoreCaseMode_ReplacesOccurence()
+        {
+            // Arrange
+            replacer.Rules = new Rules
+                                 {
+                                     new Rule
+                                         {
+                                             Mode = Rule.ModeType.RegexIgnoreCase,
+                                             Search = @"\d{2}[a-z]\d",
+                                             Replace = "wxyz"
+                                         }
+                                 };
+
+
+            // Act
+            foreach (int percent in replacer.StartAndReportProgress())
+            {
+            }
+
+            // Assert
+            Assert.AreEqual("asdf\nwxyz4\nASDF\nwxyz4", File.ReadAllText(outputFile));
         }
 
         [TestMethod]
@@ -111,8 +159,8 @@ namespace Koffeinfrei.BatchReplacer.Tests
                                          new Rule
                                          {
                                              Mode = Rule.ModeType.Regex,
-                                             Search = @"\d{3}",
-                                             Replace = "xyz"
+                                             Search = @"\d{2}[a-z]\d",
+                                             Replace = "wxyz"
                                          }
                                  };
 
@@ -123,7 +171,7 @@ namespace Koffeinfrei.BatchReplacer.Tests
             }
 
             // Assert
-            Assert.AreEqual("qwer\nxyz4", File.ReadAllText(outputFile));
+            Assert.AreEqual("qwer\nwxyz4\nASDF\n12S34", File.ReadAllText(outputFile));
         }
 
         [TestMethod]
@@ -147,7 +195,7 @@ namespace Koffeinfrei.BatchReplacer.Tests
             }
 
             // Assert
-            Assert.AreEqual("qwer\n1234", File.ReadAllText(outputFile));
+            Assert.AreEqual("qwer\n12s34\nASDF\n12S34", File.ReadAllText(outputFile));
         }
 
         [TestMethod]

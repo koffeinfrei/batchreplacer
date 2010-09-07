@@ -25,8 +25,12 @@ namespace Koffeinfrei.BatchReplacer
         {
             [XmlEnum("normal")]
             Normal,
+            [XmlEnum("normal-ignorecase")]
+            NormalIgnoreCase,
             [XmlEnum("regex")]
-            Regex
+            Regex,
+            [XmlEnum("regex-ignorecase")]
+            RegexIgnoreCase
         }
 
         [XmlElement("search")]

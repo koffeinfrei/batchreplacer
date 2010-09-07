@@ -83,8 +83,13 @@ namespace Koffeinfrei.BatchReplacer
             {
                 case Rule.ModeType.Regex:
                     return Regex.Replace(input, rule.Search, rule.Replace);
+                case Rule.ModeType.RegexIgnoreCase:
+                    return Regex.Replace(input, rule.Search, rule.Replace, RegexOptions.IgnoreCase);
+                case Rule.ModeType.Normal:
+                    return StringReplacer.Replace(input, rule.Search, rule.Replace, false);
+                case Rule.ModeType.NormalIgnoreCase:
                 default:
-                    return input.Replace(rule.Search, rule.Replace);
+                    return StringReplacer.Replace(input, rule.Search, rule.Replace, true);
             }
         }
     }
