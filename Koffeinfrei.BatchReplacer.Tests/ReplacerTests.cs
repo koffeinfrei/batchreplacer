@@ -17,6 +17,8 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using Koffeinfrei.BatchReplacer.Model;
+using Koffeinfrei.BatchReplacer.Model.Entities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Koffeinfrei.BatchReplacer.Tests
@@ -42,7 +44,7 @@ namespace Koffeinfrei.BatchReplacer.Tests
 
             replacer = new Replacer
                            {
-                               InputFiles = new List<string> {inputFile},
+                               InputFiles = new ReplacableFiles(new List<string> { inputFile }),
                                OutputDirectoryName = outputDirName
                            };
         }

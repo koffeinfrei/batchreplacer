@@ -16,7 +16,7 @@
 
 using System.Xml.Serialization;
 
-namespace Koffeinfrei.BatchReplacer
+namespace Koffeinfrei.BatchReplacer.Model.Entities
 {
     [XmlType("rule")]
     public class Rule

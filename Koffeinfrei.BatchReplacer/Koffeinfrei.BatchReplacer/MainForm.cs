@@ -20,6 +20,8 @@ using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
+using Koffeinfrei.BatchReplacer.Model;
+using Koffeinfrei.BatchReplacer.Model.Entities;
 
 namespace Koffeinfrei.BatchReplacer
 {
@@ -59,16 +61,17 @@ namespace Koffeinfrei.BatchReplacer
         {
             if (replacer.InputFiles != null && replacer.InputFiles.Count > 0)
             {
-                FileInfo info = new FileInfo(replacer.InputFiles[0]);
-                labelAbsoluteOutputDir.Text = info.Directory + "\\" + replacer.OutputDirectoryName;
+                labelAbsoluteOutputDir.Text = replacer.InputFiles[0].Info.Directory + 
+                    "\\" + 
+                    replacer.OutputDirectoryName;
             }
         }
 
         private void SetInputFiles(List<string> fileNames)
         {
-            replacer.InputFiles = fileNames;
+            replacer.InputFiles = new ReplacableFiles(fileNames);
 
-            listBoxInputFiles.DataSource = fileNames;
+            dataGridInputFiles.DataSource = replacer.InputFiles;
         }
 
         private void SetStatusMessage(string message)
@@ -176,15 +179,16 @@ namespace Koffeinfrei.BatchReplacer
             SetProgressBarValueSafe(progressBar, 0);
             SetStatusMessage("Starting job...");
 
-            foreach (int percentProgress in replacer.StartAndReportProgress())
+            foreach (int percent in replacer.StartAndReportProgress())
             {
-                backgroundWorker.ReportProgress(percentProgress);
+                backgroundWorker.ReportProgress(percent);
             }
         }
 
         private void backgroundWorker_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
             SetProgressBarValueSafe(progressBar, e.ProgressPercentage);
+            RefreshDataGridSafe(dataGridInputFiles);
         }
 
         private void backgroundWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
@@ -217,6 +221,28 @@ namespace Koffeinfrei.BatchReplacer
             else
             {
                 bar.Value = percent;
+            }
+        }
+
+        private delegate void RefreshDataGridCallback(DataGridView dataGridView);
+
+        /// <summary>
+        /// Updates the control for asynchronous calls in a thread safe manner.
+        /// </summary>
+        /// <param name="dataGridView">The data grid view.</param>
+        private void RefreshDataGridSafe(DataGridView dataGridView)
+        {
+            // InvokeRequired required compares the thread ID of the
+            // calling thread to the thread ID of the creating thread.
+            // If these threads are different, it returns true.
+            if (dataGridView.InvokeRequired)
+            {
+                RefreshDataGridCallback d = RefreshDataGridSafe;
+                Invoke(d, new object[] { dataGridView });
+            }
+            else
+            {
+                dataGridView.Refresh();
             }
         }
     }

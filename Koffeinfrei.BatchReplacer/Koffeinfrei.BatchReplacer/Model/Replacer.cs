@@ -17,16 +17,15 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text.RegularExpressions;
+using Koffeinfrei.BatchReplacer.Model.Entities;
 
-namespace Koffeinfrei.BatchReplacer
+namespace Koffeinfrei.BatchReplacer.Model
 {
     public class Replacer
     {
         public Rules Rules { get; set; }
 
-        public List<string> InputFiles { get; set; }
+        public ReplacableFiles InputFiles { get; set; }
 
         public string OutputDirectoryName { get; set; }
 
@@ -39,6 +38,8 @@ namespace Koffeinfrei.BatchReplacer
                        !string.IsNullOrEmpty(OutputDirectoryName);
             }
         }
+
+        public OverallReport Report { get; private set; }
 
         /// <summary>
         /// Starts the and report progress. The progress is reported as percent
@@ -53,38 +54,56 @@ namespace Koffeinfrei.BatchReplacer
             }
 
             string outputDirectory = Path.Combine(
-                new FileInfo(InputFiles[0]).DirectoryName, OutputDirectoryName);
+                InputFiles[0].Info.DirectoryName, OutputDirectoryName);
 
             if (!Directory.Exists(outputDirectory))
             {
                 Directory.CreateDirectory(outputDirectory);
             }
 
-            // TODO check if fileName is not null or empty);
-            //foreach (string fileName in inputFileNames)
+            Report = new OverallReport();
+
+            // TODO check if fileName is not null or empty)
             for (int i = 0; i < InputFiles.Count; ++i)
             {
-                FileInfo sourceFile = new FileInfo(InputFiles[i]);
+                try
+                {
+                    FileInfo sourceFile = InputFiles[i].Info;
 
-                string text = File.ReadAllText(sourceFile.FullName);
+                    InputFiles[i].LoadContentFromFile();
 
-                text = Rules.Aggregate(text, Replace);
+                    foreach (Rule rule in Rules)
+                    {
+                        SingleReport singleReport = Replace(InputFiles[i].ReplacedContent, rule);
+                        InputFiles[i].ReplacedContent = singleReport.Text;
+                        InputFiles[i].Matches += singleReport.Matches;
 
-                File.WriteAllText(
-                    Path.Combine(Path.Combine(sourceFile.DirectoryName, outputDirectory, sourceFile.Name)), text);
+                        Report.Matches += singleReport.Matches;
+                    }
 
-                yield return (int)((i+1) * 1.0 / (InputFiles.Count) * 100);
+                    InputFiles[i].SaveContentToFile(
+                        Path.Combine(sourceFile.DirectoryName, outputDirectory, sourceFile.Name));
+                }
+                catch (Exception e)
+                {
+                    InputFiles[i].Error = e.Message;
+                    Report.Errors.Add(e.Message);
+                }
+
+                InputFiles[i].Done = true;
+
+                yield return (int)((i + 1) * 1.0 / (InputFiles.Count) * 100);
             }
         }
 
-        private static string Replace(string input, Rule rule)
+        private static SingleReport Replace(string input, Rule rule)
         {
             switch (rule.Mode)
             {
                 case Rule.ModeType.Regex:
-                    return Regex.Replace(input, rule.Search, rule.Replace);
+                    return RegexReplacer.Replace(input, rule.Search, rule.Replace, false);
                 case Rule.ModeType.RegexIgnoreCase:
-                    return Regex.Replace(input, rule.Search, rule.Replace, RegexOptions.IgnoreCase);
+                    return RegexReplacer.Replace(input, rule.Search, rule.Replace, true);
                 case Rule.ModeType.Normal:
                     return StringReplacer.Replace(input, rule.Search, rule.Replace, false);
                 case Rule.ModeType.NormalIgnoreCase:

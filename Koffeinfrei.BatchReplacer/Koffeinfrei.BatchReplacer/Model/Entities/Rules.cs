@@ -21,7 +21,7 @@ using System.Text;
 using System.Xml.Serialization;
 using System.Linq;
 
-namespace Koffeinfrei.BatchReplacer
+namespace Koffeinfrei.BatchReplacer.Model.Entities
 {
     [XmlType("rules")]
     [XmlRoot("rules")]
